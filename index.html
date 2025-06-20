@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随便观推荐经营方案</title>
+    <style>
+        :root {
+            --primary-color: #5e35b1;
+            --secondary-color: #7e57c2;
+            --accent-color: #ff7043;
+            --light-bg: #f5f7fa;
+            --dark-text: #333;
+            --light-text: #fff;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f8f9ff 100%);
+            color: var(--dark-text);
+            line-height: 1.6;
+            padding: 16px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--secondary-color);
+            font-size: 1rem;
+        }
+
+        .trend-selection {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .selection-heading {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .selection-heading i {
+            margin-right: 12px;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .category-selectors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .category-selector {
+            flex: 1 1 200px;
+            min-width: 200px;
+        }
+
+        .category-selector label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .category-selector select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d1c4e9;
+            border-radius: var(--border-radius);
+            background: white;
+            font-size: 1rem;
+            color: var(--dark-text);
+            transition: all 0.3s;
+        }
+
+        .category-selector select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(94, 53, 177, 0.2);
+        }
+
+        .generate-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 12px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(94, 53, 177, 0.4);
+        }
+
+        .results {
+            display: none;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .results-header {
+            color: var(--success);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e8eaf6;
+            padding-bottom: 12px;
+        }
+
+        .income-value {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .recommended-products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .product-card {
+            background: #f3f4fe;
+            border-radius: var(--border-radius);
+            padding: 16px;
+            text-align: center;
+            border-left: 4px solid var(--secondary-color);
+            transition: all 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(126, 87, 194, 0.2);
+        }
+
+        .product-price {
+            background: var(--success);
+            color: white;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .strategy {
+            margin-top: 24px;
+            padding: 16px;
+            background: #fff8f1;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--warning);
+        }
+
+        .strategy h3 {
+            color: var(--warning);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .strategy p {
+            line-height: 1.8;
+        }
+
+        .product-table-container {
+            margin-top: 24px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .table-header {
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 600px;
+        }
+
+        th {
+            background: #e8eaf6;
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 12px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover td {
+            background: #f5f7ff;
+        }
+
+        .trend-price {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .trend-category {
+            background-color: #fff8e1 !important;
+            border-left: 3px solid var(--warning);
+        }
+
+        .highlight {
+            background: #e3f2fd !important;
+            font-weight: 600;
+            animation: highlight 1.5s ease;
+        }
+
+        @keyframes highlight {
+            0% {
+                background: #fff176;
+            }
+
+            100% {
+                background: #e3f2fd;
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            padding: 20px;
+        }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .category-selectors {
+                flex-wrap: nowrap;
+            }
+
+            .recommended-products {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .trend-selection {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .selection-heading {
+                font-size: 1.1rem;
+            }
+
+            .product-card {
+                padding: 12px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>随便观趋势推荐经营方案</h1>
+        </header>
+
+        <main>
+            <section class="trend-selection">
+                <div class="selection-heading">
+                    <i>📊</i>
+                    <h2>选择趋势类别</h2>
+                </div>
+
+                <div class="category-selectors">
+                    <div class="category-selector">
+                        <label for="category1">第一趋势类别</label>
+                        <select id="category1">
+                            <option value="本草方制">本草方制</option>
+                            <option value="节礼贺幛">节礼贺幛</option>
+                            <option value="虚室坐修">虚室坐修</option>
+                            <option value="素裳岳履">素裳岳履</option>
+                            <option value="器引百味">器引百味</option>
+                            <option value="游方巧器">游方巧器</option>
+                        </select>
+                    </div>
+
+                    <div class="category-selector">
+                        <label for="category2">第二趋势类别</label>
+                        <select id="category2">
+                            <option value="节礼贺幛">节礼贺幛</option>
+                            <option value="本草方制">本草方制</option>
+                            <option value="虚室坐修">虚室坐修</option>
+                            <option value="素裳岳履">素裳岳履</option>
+                            <option value="器引百味">器引百味</option>
+                            <option value="游方巧器">游方巧器</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="generate-btn" onclick="calculate()">生成经营方案</button>
+            </section>
+
+            <section class="results" id="results">
+                <div class="results-header">
+                    <h2>最优经营方案</h2>
+                    <div class="income-value" style="display: none;">总收益: <span id="totalIncome">0</span></div>
+                </div>
+
+                <div class="recommended-products" id="recommendedProducts">
+                    <!-- 产品卡片将由JS动态生成 -->
+                </div>
+
+            </section>
+
+            <section class="product-table-container">
+                <div class="table-header">
+                    <h2><i>📋</i> 产品收益数据表</h2>
+                </div>
+                <table id="productTable">
+                    <thead>
+                        <tr>
+                            <th>地图</th>
+                            <th>产物</th>
+                            <th>类别</th>
+                            <th>单价</th>
+                            <th>趋势价格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 表格数据由JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+
+    </div>
+
+    <script>
+        // 产品数据
+        const products = [
+            { map: "1-1", name: "相位桩", category: "游方巧器", price: 80, trendPrice: 96 },
+            { map: "1-2", name: "松烟釜", category: "器引百味", price: 81, trendPrice: 97 },
+            { map: "1-3", name: "守一玄佩", category: "虚室坐修", price: 82, trendPrice: 98 },
+            { map: "2-1", name: "静笃护腕", category: "素裳岳履", price: 85, trendPrice: 102 },
+            { map: "2-2", name: "云魄琴炉", category: "虚室坐修", price: 86, trendPrice: 103 },
+            { map: "2-3", name: "云门垒", category: "节礼贺幛", price: 87, trendPrice: 104 },
+            { map: "3-1", name: "醒心促愈素", category: "本草方制", price: 90, trendPrice: 108 },
+            { map: "3-2", name: "镇厄面", category: "节礼贺幛", price: 95, trendPrice: 114 },
+            { map: "3-3", name: "异构抗凝膏", category: "本草方制", price: 100, trendPrice: 120 }
+        ];
+
+        // 初始化页面
+        function initPage() {
+            const tableBody = document.querySelector("#productTable tbody");
+
+            products.forEach(prod => {
+                const row = document.createElement("tr");
+
+
+                row.innerHTML = `
+                    <td>${prod.map}</td>
+                    <td>${prod.name}</td>
+                    <td>${prod.category}</td>
+                    <td>${prod.price}</td>
+                    <td ${prod.trendPrice ? 'class="trend-price"' : ''}>
+                        ${prod.trendPrice || '-'}
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // 计算最优方案
+        function calculate() {
+            const category1 = document.getElementById("category1").value;
+            const category2 = document.getElementById("category2").value;
+
+            if (category1 === category2) {
+                alert("请选择两个不同的类别");
+                return;
+            }
+
+            // 计算每个产品的实际收入（趋势类别使用趋势价）
+            products.forEach(prod => {
+                prod.actualIncome = (prod.category === category1 || prod.category === category2)
+                    ? (prod.trendPrice || 120)
+                    : prod.price;
+            });
+
+            // 按收入从高到低排序
+            const sortedProducts = [...products].sort((a, b) => b.actualIncome - a.actualIncome);
+
+            // 选择前4个产品作为方案
+            const bestProducts = sortedProducts.slice(0, 4);
+            const totalIncome = bestProducts.reduce((sum, prod) => sum + prod.actualIncome, 0);
+
+            // 显示结果
+            displayResults(bestProducts, totalIncome, category1, category2);
+
+            // 高亮表格中的最佳产品
+            highlightProducts(bestProducts);
+        }
+
+        // 显示结果
+        function displayResults(bestProducts, totalIncome, category1, category2) {
+            document.getElementById("totalIncome").textContent = totalIncome;
+
+            const container = document.getElementById("recommendedProducts");
+            container.innerHTML = '';
+
+            bestProducts.forEach((prod, index) => {
+                const card = document.createElement("div");
+                card.className = "product-card";
+
+                // 添加不同的边框颜色
+                const colors = ["#5e35b1", "#7e57c2", "#ff7043", "#4caf50"];
+
+                card.innerHTML = `
+                    <div style="font-size: 2rem; color: ${colors[index]}">${prod.map}</div>
+                    <h3>${prod.name}</h3>
+                    <div style="color: #666; font-size: 0.9rem">${prod.category}</div>
+                    <div class="product-price">收益: ${prod.actualIncome}</div>
+                `;
+
+                container.appendChild(card);
+            });
+
+
+            // 显示结果区域
+            document.getElementById("results").style.display = "block";
+
+            // 滚动到结果区域
+            document.getElementById("results").scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // 高亮表格中的产品
+        function highlightProducts(bestProducts) {
+            const table = document.getElementById("productTable");
+            const rows = table.getElementsByTagName("tbody")[0].rows;
+
+            // 先清除所有高亮
+            for (let row of rows) {
+                row.classList.remove("highlight");
+            }
+
+            // 添加高亮
+            bestProducts.forEach(prod => {
+                for (let row of rows) {
+                    if (row.cells[0].textContent === prod.map) {
+                        row.classList.add("highlight");
+                        break;
+                    }
+                }
+            });
+        }
+
+        // 页面加载时初始化
+        window.addEventListener("DOMContentLoaded", initPage);
+    </script>
+</body>
+
+</html>
